@@ -1,17 +1,12 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Routers from './routers/Routers'
+import React from "react";
+import StockMarketRoot from "./stockmarket/index.jsx";
 
 function App() {
-
-
   return (
-    <>
-      <Routers />
-    </>
-  )
+    <React.StrictMode>
+      <StockMarketRoot />
+    </React.StrictMode>
+  );
 }
 
-export default App
+export default App;
