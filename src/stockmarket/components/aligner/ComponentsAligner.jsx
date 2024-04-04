@@ -5,12 +5,12 @@ import ProductCard from '../cards/ProductCard'
 import BottomFixedCard from '../cards/BottomFixedCard'
 import SearchInput from '../core/SearchInput'
 
-function ComponentsAligner({ title, products = [], bottomCardComponent, navLink }) {
+function ComponentsAligner({ title, products = [], bottomCardComponent, navLink, getSearchValue }) {
   return (
     <div className="flex flex-col bg-background min-h-screen">
       <TitleCard
         title={title}
-        searchComponent={<SearchInput />}
+        searchComponent={<SearchInput callback={getSearchValue}/>}
       />
       <ProductCard
         products={products}

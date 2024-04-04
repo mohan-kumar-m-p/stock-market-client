@@ -6,7 +6,7 @@ function ProductCard({ products, navLink = '/' }) {
     return (
         <div className="grid grid-cols-2  h-[517px] md:h-[497px] lg:h-[487px] md:grid-cols-3 lg:grid-cols-4 gap-4 px-4 overflow-auto ">
             {products.map((product, pi) => (
-                <Link to={navLink} key={pi} className="rounded-xl">
+                <Link to={navLink+'/'+product._id} key={pi} className="rounded-xl">
                     <div className=" font-serif max-w-md mx-auto  rounded-xl shadow-xl overflow-hidden md:max-w-2xl bg-white hover:bg-yellow-100">
                         <div className="p-4 pt-0">
                             <div className="font-bold text-xl md:text-2xl mb-2 text-center md:text-left">{product?.name} ({product?.symbol})</div>
@@ -25,7 +25,6 @@ function ProductCard({ products, navLink = '/' }) {
                                 </div>
                                 <div>
                                     <p className="text-gray-700 text-sm md:text-base">Latest Quarter: {product?.latestQuarter}</p>
-                                    <p className="text-gray-700 text-sm md:text-base">Revenue TTM: ${parseInt(product?.revenueTTM, 10).toLocaleString()} USD</p>
                                     <p className="text-gray-700 text-sm md:text-base">Profit Margin: {product?.profitMargin * 100}%</p>
                                     <p className="text-gray-700 text-sm md:text-base">Target Price: ${product?.analystTargetPrice} USD</p>
                                 </div>

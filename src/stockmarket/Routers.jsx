@@ -14,7 +14,7 @@ function Routers() {
           element: <CompanyList/>,
         },
         {
-          path: "/stockmarket/company/view",
+          path: "/stockmarket/company/view/:id",
           element: <ViewCompany />,
         },
       ]
