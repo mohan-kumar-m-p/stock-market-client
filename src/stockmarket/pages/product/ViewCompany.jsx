@@ -1,89 +1,69 @@
-import React, { useEffect, useState } from 'react'
-import StockDetails from './components/StockDetails'
-import OHLCVChart from './components/OHLCVChart'
+import React, { useEffect, useState } from 'react';
+import StockDetails from './components/StockDetails';
+import OHLCVChart from './components/OHLCVChart';
 import CompanyService from '../../services/CompanyService';
 import { useParams } from 'react-router-dom';
 
 function ViewCompany() {
-    const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
+  const [ohlcvData, setOhlcvData] = useState([]);
+  const { id } = useParams();
 
-    const { id } = useParams();
+  // Fetches both company details and OHLCV data
+  useEffect(() => {
+    const fetchData = async () => {
+      await getDetails();
+    };
+    fetchData();
+  }, [id]);
 
-  useEffect(()=>{
-    init();
-  },[])
-
-  async function init(){
-    getDetails();
-  }
-
-  async function getDetails(params = {}){
-    params.filter = {isActive:true};
-    const res = await CompanyService.getCompanyDetails(params,id);
-    if(res?.resp?.success){
-      setData(res?.resp?.result?.data);
-      console.log('res?.data -- ',res?.resp?.result?.data);
+  async function getDetails() {
+    const res = await CompanyService.getCompanyDetails({ filter: { isActive: true } }, id);
+    if (res?.resp?.success) {
+      const r = res.resp.result.data;
+      setData(r);
+      await getOHLCVData({filter:{symbol:r?.symbol}});
     }
   }
 
+  async function getOHLCVData(params = {}){
+    let p = {};
+    if(params?.filter){
+      p.filter = Object.assign(params.filter, {isActive:true});
+    }else{
+      p = {filter: {isActive:true, symbol:data?.symbol}}
+    }
+    const res = await CompanyService.getOHLCVList(p,id);
+    console.log('res?.resp -- ',res?.resp);
+    if(res?.resp?.success){
+      setOhlcvData(res?.resp?.result?.data?.slice(0,6));
+      console.log('ohlcvnData -- ',res?.resp?.result?.data?.slice(0,6));
+    }
+  }
 
-    const ohlcvData = [
-        {
-            "timestamp": "2024-03-28 19:55:00",
-            "open": "190.9500",
-            "high": "190.9500",
-            "low": "190.4000",
-            "close": "190.4100",
-            "volume": "91"
-        },
-        {
-            "timestamp": "2024-03-28 19:50:00",
-            "1. open": "190.2000",
-            "2. high": "190.2100",
-            "3. low": "190.2000",
-            "4. close": "190.2100",
-            "5. volume": "3"
-        },
-        {
-            "timestamp": "2024-03-28 19:30:00",
-            "1. open": "190.2000",
-            "2. high": "190.2000",
-            "3. low": "190.2000",
-            "4. close": "190.2000",
-            "5. volume": "16"
-        },
-        {
-            "timestamp": "2024-03-28 19:10:00",
-            "1. open": "190.1600",
-            "2. high": "190.1600",
-            "3. low": "190.1600",
-            "4. close": "190.1600",
-            "5. volume": "0"
-        },
-        {
-            "timestamp": "2024-03-28 19:00:00",
-            "1. open": "190.9600",
-            "2. high": "190.9600",
-            "3. low": "190.9500",
-            "4. close": "190.9500",
-            "5. volume": "941332"
-        },
-        {
-            "timestamp": "2024-03-28 18:55:00",
-            "1. open": "191.2190",
-            "2. high": "191.2190",
-            "3. low": "191.0600",
-            "4. close": "191.0600",
-            "5. volume": "1"
-        }
-    ];
+  // ensure `data.symbol` is available before making a request
+  const onSelect = interval => {
+    if (data?.symbol) {
+      getOHLCVData({ filter: { interval ,symbol: data.symbol} });
+    }
+  };
 
-    return (
-        <div className='flex'> 
-            <StockDetails stock={data} />
-            <OHLCVChart ohlcvData={ohlcvData} />
-        </div>
-    )
+  // Refreshes OHLCV data with the current symbol and company ID
+  const onRefresh = async () => {
+    if (data?.symbol) {
+      const res = await CompanyService.createOHLCV({ symbol: data.symbol, companyId: id });
+      if (res?.resp?.success) {
+        setOhlcvData(res.resp.result.data.slice(0, 6));
+      }
+    }
+  };
+
+  return (
+    <div className='flex'>
+      {data && <StockDetails stock={data} />}
+      <OHLCVChart ohlcvData={ohlcvData} onSelect={onSelect} onRefresh={onRefresh} />
+    </div>
+  );
 }
 
-export default ViewCompany
+export default ViewCompany;

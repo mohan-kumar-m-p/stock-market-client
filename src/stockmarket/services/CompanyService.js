@@ -26,6 +26,28 @@ class CompanyService {
     );
   }
 
+  static createOHLCV(params) {
+    return AjaxService.request(
+        API_ENDPOINT + "/api/" + API_VERSION + "/stockmarket/ohlcv/create",
+      params,
+      'POST'
+    );
+  }
+
+  static getOHLCVList(params) {
+    return AjaxService.request(
+      API_ENDPOINT + "/api/" + API_VERSION + "/stockmarket/ohlcv/list",
+      params,
+    );
+  }
+
+  static getOHLCVDetails(params, id) {
+    return AjaxService.request(
+      API_ENDPOINT + "/api/" + API_VERSION + "/stockmarket/ohlcv/view/"+id,
+      params,
+    );
+  }
+
 }
 
 export default CompanyService;
