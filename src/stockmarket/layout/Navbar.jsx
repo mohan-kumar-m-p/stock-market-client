@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import AccountMenu from "./components/Account";
 
 function NavList() {
-
+  const [isHovering, setIsHovering] = useState(false);
   return (
     <ul className="bg-white my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       <li className="p-1 font-medium">
@@ -25,17 +26,21 @@ function NavList() {
           </svg>
         </Link>
       </li>
-      <li className="p-1 font-medium">
-        <Link  className="flex items-center p-2 rounded hover:bg-gray-200">
+      <li className="p-1 font-medium" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+        <Link  className="flex items-center justify-center p-2 rounded hover:bg-gray-200 ">
           <span>Account</span>
+          <div>
+          <AccountMenu isHovering={isHovering}/>
+          </div>
+          
         </Link>
       </li>
     </ul>
   );
 }
 
-export function NavbarWithSearch() {
-  const [openNav, setOpenNav] = React.useState(false);
+export function Navbar() {
+  const [openNav, setOpenNav] = useState(false);
 
   const handleWindowResize = () =>
     window.innerWidth >= 960 && setOpenNav(false);
@@ -51,7 +56,7 @@ export function NavbarWithSearch() {
   return (
     <>
       <nav className="flex justify-between items-center mx-auto max-w-screen-xl px-6 bg-white shadow-lg drop-shadow shadow-gray border-2 mt-2 rounded">
-        <Link to="/" className="text-xl font-semibold">Stock Market</Link>
+        <Link to="/home" className="text-xl font-semibold">Stock Market</Link>
         <div className="hidden lg:flex">
           <NavList />
         </div>

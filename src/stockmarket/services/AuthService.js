@@ -6,18 +6,19 @@ import StorageService from "./StorageService";
 class AuthService {
 
   static doStaffLogin(params) {
+    console.log("params", params);
     return AjaxService.request(
-      API_ENDPOINT + "api/" + API_VERSION + "/staff/login",
+      API_ENDPOINT + "/api/" + API_VERSION + "/auth/admin/login",
       params,
       'POST'
     );
   }
 
-  static updateStaffSession(params) {
+  static createStaff(params) {
     return AjaxService.request(
-      API_ENDPOINT + "api/" + API_VERSION + "/staff/updatesessionoutlet",
+      API_ENDPOINT + "/api/" + API_VERSION + "/admin/create",
       params,
-      'PUT'
+      'POST'
     );
   }
 
