@@ -12,7 +12,6 @@ function CompanyList() {
   const [searchParams, setSearchParams] = useState('');
 
   useEffect(() => {
-    console.log('search - ',search);
     if(search && search?.length > 0){
       onSearch(search);
       location.state.symbol = '';

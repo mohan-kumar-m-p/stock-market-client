@@ -12,6 +12,7 @@ import AuthService from '../../services/AuthService';
 const schema = yup.object({
   email: yup.string().email('Invalid email address').required('Email is required'),
   password: yup.string().required('Password is required'),
+  remember: yup.boolean(),
 }).required();
 
 const LoginPage = () => {
@@ -30,11 +31,12 @@ const LoginPage = () => {
     const r = await AuthService.doStaffLogin({
       username: data?.email,
       password: data?.password,
+      remember: data?.remember || false,
     });
 
-    console.log("s ------ ", r);
 
     if (r?.resp?.success && r?.resp?.result?.token) {
+      toast.success("Login Successful !");
       const data = r?.resp?.result;
       AuthService.setToken(data?.token)
       AuthService?.setUser(JSON.stringify({
@@ -46,10 +48,6 @@ const LoginPage = () => {
 
       login();
       navigate("/home", { redirect: true });
-
-      toast.success("Login Successful !", {
-        position: 'POSITION_TOP_CENTER',
-      });
     } else {
       toast.error("Login failed !", {
         position: 'POSITION_TOP_CENTER',
@@ -96,7 +94,7 @@ const LoginPage = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+              <label {...register("remember")} htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
                 Remember me
               </label>
             </div>

@@ -34,10 +34,8 @@ function ViewCompany() {
       p = {filter: {isActive:true, symbol:data?.symbol}}
     }
     const res = await CompanyService.getOHLCVList(p,id);
-    console.log('res?.resp -- ',res?.resp);
     if(res?.resp?.success){
       setOhlcvData(res?.resp?.result?.data?.slice(0,6));
-      console.log('ohlcvnData -- ',res?.resp?.result?.data?.slice(0,6));
     }
   }
 

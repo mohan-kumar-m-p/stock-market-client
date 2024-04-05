@@ -5,11 +5,8 @@ import { useAuth } from '../../hooks/AuthContext';
 import AuthService from '../../services/AuthService';
 
 const AccountMenu = ({ isHovering }) => {
-
-    const navigate = useNavigate();
     const { logout } = useAuth();
     const data = JSON.parse(AuthService.getUser());
-    console.log('rrrr', data);
     return (
         <div className="relative">
 

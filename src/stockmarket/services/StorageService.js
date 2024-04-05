@@ -6,6 +6,9 @@ class StorageService {
   
     static get(key) {
       try {
+        if(key=='t'){
+          return localStorage.getItem(key) || '';
+        }
         return JSON.parse(localStorage.getItem(key) || '');
       } catch (e) {
         return null;
