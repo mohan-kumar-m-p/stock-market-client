@@ -2,7 +2,7 @@ import React from 'react';
 
 function StockDetails({ stock }) {
     return (
-        <div className="bg-white shadow-md rounded-lg p-4 m-4 w-1/2">
+        <div className="bg-white shadow-md rounded-lg p-4 m-4 ">
             <h2 className="text-2xl font-bold mb-2">{stock?.name} ({stock?.symbol})</h2>
             <p className="text-md mb-4">{stock?.description}</p>
             <div className="grid grid-cols-2 gap-4">

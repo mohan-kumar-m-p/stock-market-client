@@ -59,9 +59,13 @@ function ViewCompany() {
   };
 
   return (
-    <div className='flex'>
+    <div className='flex justify-between'>
+      <div className='w-1/2'>
       {data && <StockDetails stock={data} />}
+      </div>
+      <div className='w-1/2'>
       <OHLCVChart ohlcvData={ohlcvData} onSelect={onSelect} onRefresh={onRefresh} />
+      </div>
     </div>
   );
 }
